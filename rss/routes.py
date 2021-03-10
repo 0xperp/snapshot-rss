@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from rss import app
-from rss.settings import SNAPSHOT_API_ENDPOINT, SNAPSHOT_BASE_URL, RSS_FEED_LINK
+from rss.settings import SNAPSHOT_API_ENDPOINT, SNAPSHOT_BASE_URL, RSS_FEED_BASE_URL
 from rfeed import Feed, Item, Guid
 import requests
 from datetime import datetime
@@ -26,7 +26,7 @@ def proposals(space):
 
         feed = Feed(
             title='%s Proposals' % space,
-            link=RSS_FEED_LINK,
+            link='%s/api/v1/spaces/%s/proposals' % (RSS_FEED_BASE_URL, space),
             description = "Proposals for %s" % space,
             language='en-US',
             lastBuildDate=datetime.now(),

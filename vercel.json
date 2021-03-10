@@ -15,6 +15,6 @@
     "env": {
         "SNAPSHOT_API_ENDPOINT": "https://hub.snapshot.page",
         "SNAPSHOT_BASE_URL": "https://snapshot.page",
-        "RSS_FEED_LINK": "http://www.example.com/rss"
+        "RSS_FEED_BASE_URL": "https://snapshot-rss.vercel.app"
       }
   }
