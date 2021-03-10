@@ -1,0 +1,20 @@
+{
+    "version": 2,
+    "rewrites": [
+        { "source": "/api/v1/(.*)", "destination": "/api/index.py" }
+    ],
+    "redirects": [
+        { "source": "/", "destination": "https://github.com/mtahon/snapshot-rss" }
+    ],
+    "functions": {
+        "api/index.py": {
+            "memory": 1024,
+            "maxDuration": 10
+        }
+    },
+    "env": {
+        "SNAPSHOT_API_ENDPOINT": "https://hub.snapshot.page",
+        "SNAPSHOT_BASE_URL": "https://snapshot.page",
+        "RSS_FEED_LINK": "http://www.example.com/rss"
+      }
+  }
