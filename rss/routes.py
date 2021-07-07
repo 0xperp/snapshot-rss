@@ -8,20 +8,36 @@ from datetime import datetime
 @app.route('/api/v1/spaces/<space>/proposals', methods=['GET'])
 def proposals(space):
     # Get the proposal from the space
-    r = requests.get('%s/api/%s/proposals' % (SNAPSHOT_API_ENDPOINT, space))
+    graphql_query = """
+        {
+            proposals(
+                orderBy: "created",
+                orderDirection: desc,
+                where:{space:"%s", state:"active"}
+            ) {
+                id
+                title
+                body
+                created
+                author
+                state
+            }
+        }
+    """ % space
+    r = requests.post('%s/graphql' % SNAPSHOT_API_ENDPOINT, json={'query': graphql_query})
 
     # Success response
     if r.ok:
         # Build list of items
         items = []
-        for k, v in r.json().items():
+        for proposal in r.json()['data']['proposals']:
             items.append(Item(
-                title=v['msg']['payload']['name'],
-                link='%s/#/%s/proposal/%s' % (SNAPSHOT_BASE_URL, space, k),
-                description=v['msg']['payload']['body'],
-                author=v['address'],
-                guid=Guid(k, False),
-                pubDate=datetime.fromtimestamp(int(v['msg']['timestamp'])),
+                title=proposal['title'],
+                link='%s/#/%s/proposal/%s' % (SNAPSHOT_BASE_URL, space, proposal['id']),
+                description=proposal['body'],
+                author=proposal['author'],
+                guid=Guid(proposal['id'], False),
+                pubDate=datetime.fromtimestamp(int(proposal['created'])),
             ))
 
         feed = Feed(
@@ -33,4 +49,6 @@ def proposals(space):
 	        items=items
         )
 
-    return feed.rss()
+        return feed.rss()
+    else:
+        return jsonify({'code': r.status_code, 'text': r.text})
