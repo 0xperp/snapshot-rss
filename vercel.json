@@ -13,7 +13,7 @@
         }
     },
     "env": {
-        "SNAPSHOT_API_ENDPOINT": "https://hub.snapshot.page",
+        "SNAPSHOT_API_ENDPOINT": "https://hub.snapshot.org",
         "SNAPSHOT_BASE_URL": "https://snapshot.page",
         "RSS_FEED_BASE_URL": "https://snapshot-rss.vercel.app"
       }
